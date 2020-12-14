@@ -1,6 +1,8 @@
 package org.jetbrains.plugins.scala
 package debugger
 
+import com.intellij.concurrency.ConcurrentCollectionFactory
+
 import java.{util => ju}
 import com.intellij.debugger.engine._
 import com.intellij.debugger.impl.DebuggerUtilsEx
@@ -675,7 +677,7 @@ object ScalaPositionManager {
   def positionsOnLine(file: PsiFile, lineNumber: Int): Seq[PsiElement] = {
     //stored in `file`, invalidated on `file` change
     @CachedInUserData(file, file)
-    def cachedMap: ConcurrentIntObjectMap[Seq[PsiElement]] = ContainerUtil.createConcurrentIntObjectMap()
+    def cachedMap: ConcurrentIntObjectMap[Seq[PsiElement]] = ConcurrentCollectionFactory.createConcurrentIntObjectMap()
 
     if (lineNumber < 0) return Seq.empty
 

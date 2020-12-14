@@ -58,11 +58,9 @@ class IvyIndex(val root: String, val name: String, implicit val project: Project
 
   override def searchGroup(artifactId: String): Set[String] = {
     withStorageCheck {
-      if (artifactId.isEmpty)
-        Option(groupToArtifactMap.getAllKeysWithExistingMapping)
-          .map {_.asScala.toSet}
-          .getOrElse(Set.empty)
-      else
+      if (artifactId.isEmpty) {
+        artifactsWithExistingMapping
+      } else
         Option(artifactToGroupMap.get(artifactId)).getOrElse(Set.empty)
     }
   }
@@ -70,12 +68,19 @@ class IvyIndex(val root: String, val name: String, implicit val project: Project
   override def searchArtifact(groupId: String): Set[String] = {
     withStorageCheck {
       if (groupId.isEmpty)
-        Option(artifactToGroupMap.getAllKeysWithExistingMapping)
-        .map {_.asScala.toSet}
-        .getOrElse (Set.empty)
+        artifactsWithExistingMapping
       else
         Option(groupToArtifactMap.get(groupId)).getOrElse(Set.empty)
     }
+  }
+
+  private def artifactsWithExistingMapping = {
+    val setBuilder = Set.newBuilder[String]
+    groupToArtifactMap.processKeysWithExistingMapping { key =>
+      setBuilder.addOne(key)
+      true
+    }
+    setBuilder.result()
   }
 
   override def searchVersion(groupId: String, artifactId: String): Set[String] = {
