@@ -1,7 +1,6 @@
-import Common._
-import Dependencies.{provided, sbtStructureExtractor}
 import org.jetbrains.sbtidea.Keys._
-import sbtide.Keys.ideSkipProject
+
+import java.nio.file.Path
 
 // Global build settings
 
@@ -290,7 +289,8 @@ lazy val bsp =
     )
     .settings(
       libraryDependencies ++= DependencyGroups.bsp,
-      intellijMainJars := Seq.empty
+      intellijMainJars := Seq.empty,
+      resolvers += "Local Maven Repository" at "file:///"+Path.userHome+"/.ivy/local"
     )
 
 // Integration with other IDEA plugins

@@ -178,7 +178,7 @@ object DependencyGroups {
       .exclude("com.google.code.gson", "gson") // included in IDEA platform
       .exclude("com.google.guava", "guava") // included in IDEA platform
     ,
-    "ch.epfl.scala" %% "bsp-testkit" % bspVersion % "test",
+    "ch.epfl.scala" %% "bsp-testkit" % "2.0.0-M13+21-eba5db65+20210115-1441-SNAPSHOT" % "test",
     scalaTest,
     scalaCheck,
     "org.scalatestplus" %% "junit-4-12" % "3.1.2.0" % "test",
